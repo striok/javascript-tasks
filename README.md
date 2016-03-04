@@ -14,7 +14,7 @@ Reverses digits in the `number`. If parameter is not a number return false.
 
 ### squareOrCube(array)
 
-Squares every **even** number and cube every **odd** number in `array`. Returns the update array of numbers.
+Squares every **odd** number and cube every **even** number in `array`. Returns the update array of numbers.
 
 ### replaceString(list, string, newString)
 
