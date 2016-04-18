@@ -9,455 +9,513 @@ var chance = require('chance').Chance();
 
 describe('Lodash training', function ()
 {
-    describe('chunk', function ()
-    {
-        it('should split array into chunks of 3 elements', function ()
-        {
-            expect(_.chunk.apply(_, datasets.chunk())).to.eql([[1, 2, 3], [4, 5, 6], [7, 8]]);
-        });
-        it('should split array into chunks of 2 elements', function ()
-        {
-            expect(_.chunk.apply(_, datasets.chunk2())).to.eql([[1, 2], [3, 4], [5, 6], [7, 8]]);
-        });
-    });
+    describe('Math functions', function () {
+        describe('add', function () {
 
-    describe('compact', function ()
-    {
-        it('should remove falsy elements', function ()
-        {
-            var params = datasets.compact();
-            var array = params[0];
-            expect(array).to.include();
-            expect(array).to.include('');
-            expect(array).to.include(null);
-            expect(array).to.include(0);
-            expect(array).to.include(false);
-            expect(_.compact.apply(_, params)).to.eql([1, 2, 3]);
-        });
-    });
+            var params, capacity, area;
 
-    describe('difference', function ()
-    {
-        describe('when no differences are found between base and 2 exclusion arrays', function ()
-        {
-            it('should return empty array', function ()
-            {
-                var params = datasets.difference1();
-                var baseArray = params[0];
-                var exclusion1 = params[1];
-                var exclusion2 = params[2];
-                expect(baseArray.length).to.be.above(0);
-                expect(exclusion1.length).to.be.above(0);
-                expect(exclusion1.length).to.be.below(baseArray.length);
-                expect(exclusion2.length).to.be.above(0);
-                expect(exclusion2.length).to.be.below(baseArray.length);
-                expect(_.difference.apply(_, params)).to.eql([]);
+            beforeEach(function () {
+                params = datasets.add();
+                capacity = params[0];
+                area = params[1];
+            });
+
+            it('should verify params', function () {
+                expect(capacity instanceof Function && area instanceof Function).to.eql(true);
+                expect(params).to.have.length(2);
+            });
+
+            it('should return capacity of cube', function () {
+                expect(capacity(2)).to.eql(8);
+                expect(capacity(3.3)).to.eql(35.937);
+            });
+
+            it('should return area of cube', function () {
+                expect(area(2)).to.eql(24);
+                expect(area(3.4)).to.eql(69.36);
+            });
+
+            it('should return add two function', function () {
+                expect(_.add.apply(_, ([capacity(5), area(3)]))).to.eql(179);
+                expect(_.add.apply(_, ([capacity(0.23), area(2)]))).to.eql(24.012167);
+            });
+
+        });
+
+        describe('ceil', function () {
+
+            var params, area;
+
+            beforeEach(function () {
+                params = datasets.ceil();
+                area = params[0];
+            });
+
+            it('should verify params', function () {
+                expect(area instanceof Function).to.eql(true);
+                expect(params).to.have.length(2);
+            });
+
+            it('should return area of rectangle when area side is smaller than 0 return 0', function () {
+                expect(area(3.2,4.6)).to.eql(15.6);
+                expect(area(-2, 4)).to.eql(0);
+                expect(area(0, 0)).to.eql(0);
+                expect(area(-2, 4)).to.eql(0);
+            });
+
+            it('should return round up area of rectangle', function () {
+                expect(_.ceil.apply(_,([area(3.2, 4.4)]))).to.eql(16);
+                expect(_.ceil.apply(_,([area(2.33, 0.55)]))).to.eql(6);
+                expect(_.ceil.apply(_,([area(1.74, 0.54), 4]))).to.eql(4.5601);
+                expect(_.ceil.apply(_,([area(-2, 0.54), 4]))).to.eql(0);
             });
         });
 
-        describe('when differences are found between base and exclusion array', function ()
-        {
-            it('should return non-empty array', function ()
-            {
-                var params = datasets.difference2();
-                var baseArray = params[0];
-                var exclusion1 = params[1];
-                expect(baseArray.length).to.be.above(0);
-                expect(exclusion1.length).to.be.above(0);
-                expect(_.difference.apply(_, params)).to.eql([null, false, 2, undefined, 3]);
-            });
-        });
-    });
+        describe('divide', function () {
 
-    describe('drop', function ()
-    {
-        describe('when number of elements to drop is not specified', function ()
-        {
-            it('should remove first element of array', function ()
-            {
-                var params = datasets.drop1();
-                var array = params[0];
-                expect(params.length).to.equal(1);
-                expect(array.length).to.be.above(0);
-                var result = _.drop.apply(_, params);
-                expect(result.length).to.equal(array.length - 1);
-                _.forEach(result, function (item, index)
-                {
-                    expect(item).to.equal(array[index + 1]);
+            var params;
+
+            beforeEach(function () {
+                params = datasets.divide();
+            });
+
+            it('should verify params', function () {
+                _(params[0]).forEach(function (value) {
+                    expect(typeof value).to.eql('number');
                 });
 
+                expect(params).to.have.length(2);
             });
-        });
-        describe('when number of elements to drop is specified', function ()
-        {
-            it('should remove first "n" elements of array', function ()
-            {
-                var params = datasets.drop2();
-                var array = params[0];
-                var numberOfElements = params[1];
-                expect(params.length).to.equal(2);
-                expect(array.length).to.be.above(0);
-                expect(numberOfElements).to.be.above(-1);
-                var result = _.drop.apply(_, params);
-                expect(result.length).to.equal(Math.max(0, array.length - numberOfElements));
-                _.forEach(result, function (item, index)
-                {
-                    expect(item).to.equal(array[index + numberOfElements]);
-                });
-            });
-        });
-    });
 
-    describe('dropRight', function ()
-    {
-        describe('when number of elements to drop is specified', function ()
-        {
-            it('should remove last "n" elements of array', function ()
-            {
-                var params = datasets.dropRight();
-                var array = params[0];
-                var numberOfElements = params[1];
-                expect(params.length).to.equal(2);
-                expect(array.length).to.be.above(0);
-                expect(numberOfElements).to.be.above(-1);
-                var result = _.dropRight.apply(_, params);
-                expect(result.length).to.equal(Math.max(0, array.length - numberOfElements));
-                _.forEach(result, function (item, index)
-                {
-                    expect(item).to.equal(array[index]);
-                });
+            it('should divide two numbers a and b', function () {
+                expect(_.divide.apply(_, params)).to.eql(Infinity);
+            });
+
+        });
+
+        describe('floor', function () {
+
+            var params;
+            var capacity;
+
+            beforeEach(function () {
+                params = datasets.floor();
+                capacity = params[0];
+            });
+
+            it('should verify params', function () {
+                expect(capacity instanceof Function).to.eql(true);
+            });
+
+            it('should return capacity of cuboid', function () {
+                expect(capacity(2, 2, 2)).to.eql(8);
+                expect(capacity(2.3, 2.25, 5.43)).to.eql(28.10025);
+                expect(capacity(-1, 2.25, 5.43)).to.eql(0);
+                expect(capacity(3, -2, 5.43)).to.eql(0);
+                expect(capacity(3, 2, -3)).to.eql(0);
+            });
+
+            it('should return number round down', function () {
+                expect(_.floor.apply(_, [capacity(2,2,2)])).to.eql(8);
+                expect(_.floor.apply(_, [capacity(2.2,3.3,4.4), 2])).to.eql(31.94);
             });
         });
-    });
 
-    describe('fill', function ()
-    {
-        describe('when array has 110 elements and each item is undefined', function ()
-        {
-            it('should override 100 elements elements of array with "*" starting from postion 3', function ()
-            {
-                var params = datasets.fill1();
-                var array = params[0];
-                expect(params.length).to.be.above(2);
-                expect(array.length).to.be.equal(110);
-                _.forEach(array, function (item)
-                {
-                    expect(item).to.equal(undefined);
-                });
-                expect(_.fill.apply(_, params)).to.equal(array);
-                var i;
-                for (i = 0; i < 3; i++) {
-                    expect(array[i]).to.equal(undefined);
-                }
-                for (i = 3; i < 103; i++) {
-                    expect(array[i]).to.equal('*');
+        describe('max', function () {
+
+            var params;
+
+            beforeEach(function () {
+                params = datasets.max();
+            });
+
+            it('should find max value (5) in user array', function () {
+                expect(params).to.have.length(1);
+
+                for(var i=0; i<params[0].length; i++){
+                    expect(typeof params[0][i]).to.eql('number');
                 }
 
-                for (i = 103; i < 110; i++) {
-                    expect(array[i]).to.equal(undefined);
-                }
+                expect(_.max.apply(_, datasets.max(params))).to.eql(5);
             });
         });
-        describe('when array has 1000 elements and no start and end params are specified', function ()
-        {
-            it('should override all elements of array with "donkey"', function ()
-            {
-                var params = datasets.fill2();
-                var array = params[0];
-                expect(params.length).to.equal(2);
-                expect(array.length).to.be.equal(1000);
-                _.forEach(array, function (item)
-                {
-                    expect(item).to.equal(undefined);
-                });
-                expect(_.fill.apply(_, params)).to.equal(array);
-                _.forEach(array, function (item)
-                {
-                    expect(item).to.equal('donkey');
-                });
-            });
-        });
-    });
 
-    describe('findIndex', function ()
-    {
-        describe('when looking for element whose "getName()" method returns "Jack"', function ()
-        {
-            it('should return it`s index', function ()
-            {
-                //Given
-                var jack = new Guy('Jack');
-                var array = new Array(1000);
-                _.times(array.length, function (index)
-                {
-                    var name;
-                    do {
-                        name = chance.first();
-                    } while (name === 'Jack');
-                    array[index] = new Guy(name);
-                });
-                var jackIndex = Math.round(Math.random() * array.length);
-                array[jackIndex] = jack;
-                //When
-                var params = datasets.findIndex1(array);
-                expect(params[0]).to.equal(array);
-                //Then
-                expect(_.findIndex.apply(_, params)).to.equal(jackIndex);
-            });
-        });
-        describe('when looking for element matching {name:"Jack", age:21}', function ()
-        {
-            it('should return it`s index', function ()
-            {
-                var params = datasets.findIndex2();
-                var predicate = params[1];
-                expect(predicate).to.eql({name: 'Jack', age: 21});
-                expect(_.findIndex.apply(_, params)).to.eql(4);
-            });
-        });
-    });
 
-    describe('first', function ()
-    {
-        describe('when array is empty', function ()
-        {
-            it('should return undefined', function ()
-            {
-                var params = datasets.first1();
-                expect(params[0]).to.be.instanceof(Array);
-                expect(_.first.apply(_, params)).to.equal(undefined);
-            });
-        });
-        describe('when array is NOT empty', function ()
-        {
-            it('should return first element of the array', function ()
-            {
-                var params = datasets.first2();
-                var array = params[0];
-                expect(array.length).to.be.above(0);
-                var firsElement = array[0];
-                expect(_.first.apply(_, params)).to.equal(firsElement);
-            });
-        });
-    });
+        describe('maxBy', function () {
 
-    describe('flatten', function ()
-    {
-        describe('when isDeep is true', function ()
-        {
-            it('should flatten nested arrays recursively', function ()
-            {
-                var params = datasets.flaten1();
-                var array = params[0];
-                var hasNestedArray = _.any(array, function (item)
-                {
-                    if (_.isArray(item)) {
-                        return _.any(item, function (nestedItem)
-                        {
-                            return _.isArray(nestedItem);
-                        });
-                    }
-                    return false;
-                });
-                expect(hasNestedArray).to.equal(true);
-                expect(_.flatten.apply(_, params)).to.eql([1, 2, 3, 4]);
-            });
-        });
-        describe('when isDeep is false', function ()
-        {
-            it('should flatten only first level arrays', function ()
-            {
-                var params = datasets.flaten2();
-                var array = params[0];
-                var hasNestedArray = _.any(array, function (item)
-                {
-                    if (_.isArray(item)) {
-                        return _.any(item, function (nestedItem)
-                        {
-                            return _.isArray(nestedItem);
-                        });
-                    }
-                    return false;
-                });
-                expect(hasNestedArray).to.equal(true);
-                expect(_.flatten.apply(_, params)).to.eql([1, 2, [3], 4]);
-            });
-        });
-    });
+            describe('maxBy - array', function () {
 
-    describe('indexOf', function ()
-    {
-        it('should return index of an element in an array', function ()
-        {
-            var params = datasets.indexOf();
-            expect(_.indexOf.apply(_, params)).to.equal(2);
-        });
-    });
+                var params, arr1, arr2;
 
-    describe('initial', function ()
-    {
-        it('should return slice of an array without last element', function ()
-        {
-            var params = datasets.initial();
-            expect(_.initial.apply(_, params)).to.eql(['John', 'Doe']);
-        });
-    });
-    describe('intersection', function ()
-    {
-        describe('when 3 arrays are provided that have overlapping elements and each array is at least 5 elements long', function ()
-        {
-            it('should create an array of unique values that are included in all of the provided arrays ', function ()
-            {
-                var params = datasets.intersection();
-                _.forEach(params, function (item)
-                {
-                    expect(item.length).to.be.above(4);
+                beforeEach(function () {
+                    params = datasets.maxBy1();
+                    arr1 = [6, 5, 4, 8, 3];
+                    arr2 = [-4, -2, -6, 0];
                 });
-                expect(_.intersection.apply(_, params)).to.eql([2, 3, 1]);
+                
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                    expect(arr1 instanceof Array && arr2 instanceof Array).to.eql(true);
+                });
+
+                it('should return maxBy for array', function () {
+                    expect(_.maxBy.apply(_, datasets.maxBy1(arr1))).to.eql(8);
+                    expect(_.maxBy.apply(_, datasets.maxBy1(arr2))).to.eql(0);
+                });
+            });
+
+            /*
+            describe('maxBy - function', function () {
+                it('should use maxBy for function', function () {
+
+                });
+            });
+            //I have no idea how to do it. Probably maxBy doesn't support function. Help!
+            */
+
+            describe('maxBy - object', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.maxBy3();
+                });
+
+                it('should verify params', function () {
+                    expect(params).to.have.length(2);
+                    expect(params[0] instanceof Object).to.eql(true);
+                    expect(typeof params[1]).to.eql('string');
+                });
+
+                it('should use maxBy object', function () {
+                    expect(_.maxBy.apply(_, params)).to.eql({ Name: 'Edwin', Gold: 2500 });
+                });
+            });
+
+            describe('maxBy - string', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.maxBy4();
+                });
+
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                });
+                
+                it('should find max value in string', function () {
+                    expect(_.maxBy.apply(_, params)).to.eql('word');
+                });
             });
         });
-    });
-    describe('last', function ()
-    {
-        it('should return last element of array', function ()
-        {
-            var params = datasets.last1();
-            expect(_.last.apply(_, params)).to.eql(9);
-        });
-        it('should not modify the array', function ()
-        {
-            var params = datasets.last1();
-            var arrayLength = params[0].length;
-            _.last.apply(_, params);
-            expect(params[0].length).to.equal(arrayLength);
-        });
-        it('should return last character of a string', function ()
-        {
-            var params = datasets.last2();
-            expect(_.isString(params[0])).to.equal(true);
-            expect(_.last.apply(_, params)).to.eql('9');
-        });
-    });
-    describe('pull', function ()
-    {
-        it('should remove values from an array', function ()
-        {
-            var params = datasets.pull();
-            var array = params[0];
-            var initialArrayLength = array.length;
-            _.pull.apply(_, params);
-            expect(array.length).to.below(initialArrayLength);
-            expect(array).to.eql([3, 4, 5, 6]);
-        });
-    });
-    describe('pullAt', function ()
-    {
-        describe('when indexes are provided as array [4,9]', function ()
-        {
-            it('should remove elements from array corresponding to the given indexes and returns an array of the removed elements', function ()
-            {
-                var params = datasets.pullAt();
-                expect(params[1]).to.eql([4, 9]);
-                expect(_.pullAt.apply(_, params)).to.eql([100, 200]);
+
+
+        describe('mean', function () {
+
+            var params;
+
+            beforeEach(function () {
+                params = datasets.mean();
             });
-            it('should mutate the array', function ()
-            {
-                var params = datasets.pullAt();
-                var array = params[0];
-                var initialArrayLength = array.length;
-                _.pullAt.apply(_, params);
-                expect(array.length).to.be.below(initialArrayLength);
+
+            it('should find mean value (3.25) in user array', function () {
+                expect(params).to.have.length(1);
+                _(params[0]).forEach(function (value) {
+                    expect(typeof value).to.eql('number');
+                });
+                expect(_.mean.apply(_, params)).to.eql(3.25);
             });
         });
-    });
-    describe('remove', function ()
-    {
-        it('should remove elements that have truthy property `online`', function ()
-        {
-            var params = datasets.remove();
-            var array = params[0];
-            var predicate = params[1];
-            expect(predicate).to.eql('online');
-            var initialArrayLength = array.length;
-            expect(initialArrayLength).to.be.above(3);
-            expect(_.remove.apply(_, params)).to.eql([{online: 1}, {online: true}, {online: 'yes'}]);
-            expect(array.length).to.be.below(initialArrayLength);
-        });
-    });
-    describe('take', function ()
-    {
-        it('should remove 3 first elements of array bigger than 5 elements', function ()
-        {
-            var params = datasets.take();
-            var array = params[0];
-            var initialArrayLength = array.length;
-            expect(initialArrayLength).to.be.above(5);
-            expect(_.take.apply(_, params)).to.eql([{online: 1}, 1, 2, '3', 4]);
-            expect(array.length).to.equal(initialArrayLength);
-        });
-    });
-    describe('union', function ()
-    {
-        it('should merge 3 different arrays each having 2 elements', function ()
-        {
-            var params = datasets.union();
-            expect(params.length).to.equal(3);
-            _.forEach(params, function (array)
-            {
-                expect(array.length).to.equal(2);
+
+        describe('meanBy', function () {
+            describe('meanBy - Array', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.meanBy1();
+                });
+
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                    expect(params[0] instanceof Array).to.eql(true);
+                });
+
+                it('should find mean value in array', function () {
+                    expect(_.meanBy.apply(_, params)).to.eql(3.25);
+                });
             });
-            expect(_.union.apply(_, params)).to.eql([1, 2, 3]);
+
+            /*
+            describe('meanBy - Function', function () {
+                it('should find mean value in function', function () {
+
+                });
+            });
+            //I have no idea how to do it. Probably meanBy doesn't support function. Help!
+            */
+
+            describe('meanBy - Object', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.meanBy3();
+                });
+
+                it('should verify params', function () {
+                    expect(params).to.have.length(2);
+                    expect(params[0] instanceof Object).to.eql(true);
+                    expect(typeof params[1]).to.eql('string');
+                });
+
+                it('should find mean value in object', function () {
+                    expect(_.meanBy.apply(_, params)).to.eql(5);
+                });
+            });
+
+            /*
+            describe('meanBy - String', function () {
+                it('should find mean value in string', function () {
+
+                });
+            });
+
+            //I have no idea how to do it. Probably meanBy doesn't support string. Help!
+            */
         });
-    });
-    describe('uniq', function ()
-    {
-        describe('given elements are considered equal if they have the same value of x property', function ()
-        {
-            it('should return duplicate-free version of array', function ()
-            {
-                var params = datasets.uniq1();
-                var array = params[0];
-                var initialLength = array.length;
-                var result = _.uniq.apply(_, params);
-                expect(result).to.eql([{x: 1}, {x: 2}, 3]);
-                expect(result.length).to.be.below(initialLength);
+
+        describe('min', function () {
+
+            var params;
+
+            beforeEach(function () {
+                params = datasets.min();
+            });
+
+            it('should find min value (-3) in user array', function () {
+                expect(params).to.have.length(1);
+                _(params[0]).forEach(function (value) {
+                    expect(typeof value).to.eql('number');
+                });
+                expect(_.min.apply(_, params)).to.eql(-3);
             });
         });
-        describe('given elements are considered equal if they have the same value of x and y properties', function ()
-        {
-            it('should return duplicate-free version of array', function ()
-            {
-                var params = datasets.uniq2();
-                var array = params[0];
-                var initialLength = array.length;
-                var result = _.uniq.apply(_, params);
-                expect(result).to.eql([{x: 1, y: 1}, {x: 1, y: 2}, 3]);
-                expect(result.length).to.be.below(initialLength);
+
+
+        describe('minBy', function () {
+            
+            describe('minBy - Array', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.minBy1();
+                });
+
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                    expect(params[0] instanceof Array).to.eql(true);
+                });
+
+                it('should return min value in Array', function () {
+                    expect(_.min.apply(_, params)).to.eql(-1);
+                });
+            });
+
+            /*
+            describe('minBy - Function', function () {
+                it('Function', function () {
+                });
+            });
+            //I have no idea how to do it. Probably minBy doesn't support function. Help!
+            */
+
+            describe('minBy - Object', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.minBy3();
+                });
+                
+                it('should verify params', function () {
+                    expect(params).to.have.length(2);
+                    expect(params[0] instanceof Object).to.eql(true);
+                    expect(typeof params[1]).to.eql('string');
+                });
+
+                it('should return min value from Object', function () {
+                    expect(_.min.apply(_, params)).to.eql({ Name: 'Jack', Gold: 1500 });
+                });
+            });
+
+            describe('minBy - String', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.minBy4();
+                });
+                
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                    expect(typeof params[0]).to.eql('string');
+                });
+                
+                it('should return min value from string', function () {
+                    expect(_.min.apply(_, params)).to.eql('e');
+                });
             });
         });
-    });
-    describe('without', function ()
-    {
-        it('should remove specific elements from an array', function ()
-        {
-            var params = datasets.without();
-            var array = params[0];
-            var initialArrayLength = array.length;
-            var result = _.without.apply(_, params);
-            expect(result).to.eql([1, 2, 1, 3, 4]);
-            expect(result.length).to.be.below(initialArrayLength);
-        });
-    });
-    describe('xor', function ()
-    {
-        it('should return only elements that do not exist in both arrays', function ()
-        {
-            var params = datasets.xor();
-            _.forEach(params, function (item)
-            {
-                expect(item.length).to.be.above(2);
+
+        describe('multiply', function () {
+
+            var val1;
+            var val2;
+            var result1;
+            var params = datasets.multiply();
+
+            beforeEach(function () {
+                val1 = Math.round(Math.random() * 10);
+                val2 = Math.round(Math.random() * 10);
+                result1  = val1 * val2;
             });
-            expect(_.xor.apply(_, params)).to.eql([1, 2]);
+
+            it('should multiply two random number', function () {
+                expect(params).to.have.length(2);
+                expect(_.multiply.apply(_, datasets.multiply(val1, val2))).to.eql(result1);
+            });
+        });
+
+        describe('round', function () {
+
+            var params;
+            var sqrt;
+
+            beforeEach(function () {
+                params = datasets.round();
+                sqrt = params[0];
+            });
+
+            it('should verify', function () {
+                expect(sqrt instanceof Function).to.eql(true);
+                expect(params).to.have.length(2);
+            });
+
+            it('should return sqrt number', function () {
+                expect(sqrt(4)).to.eql(2);
+                expect(sqrt(-1)).to.eql(NaN);
+                expect(sqrt(4.2)).to.eql(2.04939015319192);
+                expect(sqrt('asdf')).to.eql(NaN);
+            });
+
+            it('should return sqrt round number to precision', function () {
+                expect(_.round.apply(_, [sqrt(4.2), 3])).to.eql(2.049);
+                expect(_.round.apply(_, [sqrt(10), 4])).to.eql(3.1623);
+                expect(_.round.apply(_, [sqrt(-10), 3])).to.eql(NaN);
+            });
+        });
+
+        describe('subtract', function () {
+
+            var params;
+
+            beforeEach(function () {
+                params = datasets.subtract();
+            });
+
+            it('should return subtract two numbers', function () {
+                expect(params).to.have.length(2);
+                expect(_.subtract.apply(_, params)).to.eql(15);
+                expect(_.divide.apply(_, params)).to.eql(Infinity);
+                expect(_.multiply.apply(_, params)).to.eql(0);
+                expect(_.add.apply(_, params)).to.eql(15);
+            });
+        });
+
+        describe('sum', function () {
+
+            var params;
+
+            beforeEach(function () {
+                params = datasets.sum();
+            });
+
+            it('should return sum of array element', function () {
+                expect(params).to.have.length(1);
+                _(params[0]).forEach(function (value) {
+                    expect(typeof value).to.eql('number');
+                });
+                expect(_.sum.apply(_, params)).to.eql(10);
+            });
+        });
+
+        describe('sumBy', function () {
+
+            describe('sumBy - Array', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.sumBy1();
+                });
+                
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                    expect(params[0] instanceof Array).to.eql(true);
+                });
+
+                it('should return sumBy of array element', function () {
+                    expect(_.sumBy.apply(_, params)).to.eql(10);
+                });
+            });
+
+            /*
+            describe('sumBy - Function', function () {
+                it('should return sumBy of function element', function () {
+
+                });
+            });
+            //I have no idea how to do it. Probably sumBy doesn't support function. Help!
+            */
+
+            describe('sumBy - Object', function () {
+                
+                var params;
+                
+                beforeEach(function () {
+                    params = datasets.sumBy3();
+                });
+                
+                it('should verify params', function () {
+                    expect(params).to.have.length(2);
+                    expect(params[0] instanceof Object).to.eql(true);
+                    expect(typeof params[1]).to.eql('string');
+                });
+                
+                it('should return sumBy of object element', function () {
+                    expect(_.sumBy.apply(_, params)).to.eql(193);
+                });
+            });
+
+            describe('sumBy - String', function () {
+
+                var params;
+
+                beforeEach(function () {
+                    params = datasets.sumBy4();
+                });
+
+                it('should verify params', function () {
+                    expect(params).to.have.length(1);
+                });
+
+                it('should return sumBy of string element', function () {
+                    expect(_.sumBy.apply(_, params)).to.eql('Thisisasimplestringtext');
+                });
+            });
         });
     });
 });

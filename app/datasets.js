@@ -1,180 +1,187 @@
 'use strict';
 
 module.exports = {
-    chunk: function ()
-    {
-        var array = [1, 2, 3, 4, 5, 6, 7, 8];
-        var size = 3;
-        return [array, size];
-    },
-    chunk2: function ()
-    {
-        var array = [1, 2, 3, 4, 5, 6, 7, 8];
-        var size = 2;
-        return [array, size];
-    },
-    compact: function ()
-    {
-        var array = [1, null, false, '', 0, 2, undefined, 3];
-        return [array];
-    },
-    difference1: function ()
-    {
-        var baseArray = [1, null, false, '', 0, 2, undefined, 3];
-        var exclusion1 = [1, '', 0];
-        var exclusion2 = [null, false, 2, undefined, 3];
-        return [baseArray, exclusion1, exclusion2];
-    },
-    difference2: function ()
-    {
-        var baseArray = [1, null, false, '', 0, 2, undefined, 3];
-        var exclusion1 = [1, '', 0];
-        return [baseArray, exclusion1];
-    },
-    drop1: function ()
-    {
-        var array = [1, 2, {}, new Array(5)];
-        return [array];
-    },
-    drop2: function ()
-    {
-        var array = [1, 2, {}, new Array(5)];
-        var numberOfElements = 2;
-        return [array, numberOfElements];
-    },
-    dropRight: function ()
-    {
-        var array = [1, 2, {}, new Array(5)];
-        var numberOfElements = 3;
-        return [array, numberOfElements];
-    },
-    fill1: function ()
-    {
-        var array = new Array(110);
-        return [array, '*', 3, 103];
-    },
-    fill2: function ()
-    {
-        var array = new Array(1000);
-        return [array, 'donkey'];
-    },
-    findIndex1: function (array)
-    {
-        function predicate(item)
-        {
-            return 'Jack' === item.getName();
-        }
 
-        return [array, predicate];
+    add: function () {
+
+        var capacity = function(x) {
+            if(x < 0){
+                return 0;
+            }else{
+                return x*x*x;
+            }
+
+        };
+
+        var area = function (x) {
+            if(x < 0){
+                return 0;
+            }else{
+                return 6*x*x;
+            }
+        };
+
+        return [capacity, area];
     },
-    findIndex2: function ()
-    {
-        var array = [1, {name: 'Jack', age: 33}, {name: 'Rick', age: 21}, 21, {name: 'Jack', age: 21}, 4, 5];
-        var predicate = {name: 'Jack', age: 21};
-        return [array, predicate];
+
+    ceil: function (x, y, precision) {
+
+        var area = function (x,y) {
+            if(x <= 0 || y <= 0){
+                return 0;
+            }
+            return (2*x+2*y);
+        };
+
+        return [area, precision];
     },
-    first1: function ()
-    {
-        var array = [];
+
+    divide: function () {
+        return [3, 0];
+    },
+
+    floor: function (callback, precision) {
+
+        var capacity = function (x, y, z) {
+            if(typeof x !== 'number' && typeof y !== 'number' && typeof z !== 'number' && x <= 0 && y <= 0 && z <= 0){
+                return 0;
+            }else if(x < 0 || y < 0 || z < 0){
+                return 0;
+            }else{
+                return x*y*z;
+            }
+        };
+
+        return [capacity, precision];
+    },
+
+    max: function () {
+
+        var tab = [4,2,5,-1];
+
+        return [tab];
+    },
+
+    maxBy1: function (array) {
         return [array];
     },
-    first2: function ()
-    {
-        var array = [1];
+    /*
+    maxBy2: function (array) {
         return [array];
     },
-    flaten1: function ()
-    {
-        var array = [[1, 2], [3, [4]]];
-        return [array, true];
+    */
+    maxBy3: function () {
+
+        var objects = [{ 'Name': 'Jack', 'Gold': 1500 }, { 'Name': 'Edwin', 'Gold': 2500 }, { 'Name': 'Bob', 'Gold': 200 }];
+
+        return [objects, 'Gold'];
     },
-    flaten2: function ()
-    {
-        var array = [[1, 2], [[3], 4]];
-        return [array];
-    },
-    indexOf: function ()
-    {
-        var array = [0, 1, 'a', 3];
-        var value = 'a';
-        return [array, value];
-    },
-    initial: function ()
-    {
-        var array = ['John', 'Doe', 'The second'];
-        return [array];
-    },
-    intersection: function ()
-    {
-        var array1 = [2, 3, 1, 8, 8];
-        var array2 = [2, 1, 2, 3, 5];
-        var array3 = [3, 4, 2, 1, 6, 6, 7];
-        return [array1, array2, array3];
-    },
-    last1: function ()
-    {
-        var array = [9];
-        return [array];
-    },
-    last2: function ()
-    {
-        var string = 'abc9';
+
+    maxBy4: function () {
+
+        var string = ['This', 'is', 'a', 'simple', 'word', 'in', 'string'];
         return [string];
     },
-    pull: function ()
-    {
-        var array = [1, 2, 1, 2, 3, 4, 5, 6];
-        return [array, 1, 2];
+
+    mean: function () {
+        var array = [3,2,4,4];
+        return [array];
     },
-    pullAt: function ()
-    {
-        var array = [0, 1, 2, 3, 100, 5, 6, 7, 8, 200];
-        var indices = [4, 9];
-        return [array, indices];
+
+    meanBy1: function () {
+        var array = [3,2,4,4];
+        return [array];
     },
-    remove: function ()
-    {
-        var array = [{online: 1}, {online: true}, {online: 'yes'}, 1];
-        var predicate = 'online';
-        return [array, predicate];
+    /*
+    meanBy2: function () {
+        return [];
     },
-    take: function ()
-    {
-        var array = [{online: 1}, 1, 2, '3', 4, 5, 6];
-        var count = 5;
-        return [array, count];
+    */
+    meanBy3: function () {
+        // poprawic
+        var objects = [{ 'n': 4 }, { 'n': 2 }, { 'n': 8 }, { 'n': 6 }];
+
+        return [objects, 'n'];
     },
-    union: function ()
-    {
-        var array1 = [1, 2];
-        var array2 = [2, 3];
-        var array3 = [1, 3];
-        return [array1, array2, array3];
+
+    meanBy4: function () {
+        return [];
     },
-    uniq1: function ()
-    {
-        var array = [{x: 1}, {x: 2}, 3, {x: 1}];
-        var iteratee = 'x';
-        return [array, iteratee];
+
+    min: function () {
+        var array = [4,3,6,0,-3,3];
+        return [array];
     },
-    uniq2: function ()
-    {
-        var array = [{x: 1, y: 1}, {x: 1, y: 2}, 3, 3];
-        var iteratee = function (value)
-        {
-            return value.x + ';' + value.y;
+
+    minBy1: function () {
+
+        var array = [4,2,5,2,-1,5];
+        return [array];
+    },
+    /*
+    minBy2: function () {
+
+        return [];
+    },
+    */
+
+    minBy3: function () {
+        var objects = [{ 'Name': 'Jack', 'Gold': 1500 }, { 'Name': 'Edwin', 'Gold': 2500 }, { 'Name': 'Bob', 'Gold': 200 }];
+        return [objects, 'Gold'];
+    },
+
+    minBy4: function () {
+        var string = 'qwertyuiop';
+        return [string];
+    },
+
+    multiply: function (a, b) {
+        return [a ,b];
+    },
+
+    round: function (number, precision) {
+
+        var sqrt = function (number) {
+            if(typeof number !== 'number'){
+                return NaN;
+            }else{
+                return Math.sqrt(number);
+            }
         };
-        return [array, iteratee];
+
+        return [sqrt, precision];
     },
-    without: function ()
-    {
-        var array = [1, 2, 5, 1, 3, 4];
-        return [array, 5, 6];
+
+    subtract: function () {
+        return [15,0];
     },
-    xor: function ()
-    {
-        var array1 = [1, 2, 3, 1, 4];
-        var array2 = [3, 4, 3];
-        return [array1, array2];
+
+    sum: function () {
+        var tab = [1,2,3,4];
+        return [tab];
+    },
+
+    sumBy1: function () {
+        var tab = [1,2,3,4];
+        return [tab];
+    },
+    /*
+    sumBy2: function () {
+        return [];
+    },
+    */
+    sumBy3: function () {
+
+        var objects = [{ 'gold': 25, 'name': 'Jack'}, { 'gold': 50, 'name': 'Edwin'}, { 'gold': 85 , 'name': 'Bill' }, { 'gold': 33 , 'name': 'Bob' }];
+
+        return [objects, 'gold'];
+    },
+
+    sumBy4: function () {
+
+        var string = 'This is a simple string text';
+        string = string.split(' ');
+
+        return [string];
     }
 };
