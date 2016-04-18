@@ -5,7 +5,7 @@ var expect = chai.expect;
 var _ = require('lodash');
 var tasks = require('../../app/tasks');
 
-describe('Lodash tasks', function ()
+describe.skip('Lodash tasks', function ()
 {
     describe('given an array', function ()
     {
