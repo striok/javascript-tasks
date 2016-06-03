@@ -5,8 +5,6 @@ chai.use(require('sinon-chai'));
 var expect = chai.expect;
 var _ = require('lodash');
 var datasets = require('../../app/datasets');
-var Guy = require('./Guy');
-var chance = require('chance').Chance();
 var sinon = require('sinon');
 
 
@@ -18,7 +16,7 @@ describe('Lodash training Object', function ()
         var params,
             elem1,
             elem2;
-        beforeEach(function(){
+        before(function(){
             params = datasets.assign();
             elem1 = params[0];
             elem2 = params[1];
@@ -27,7 +25,7 @@ describe('Lodash training Object', function ()
             expect(typeof elem1).to.eql('object');
             expect(elem2 instanceof Object).to.eql(true);
         });
-        it('should check if first object has right properties', function(){
+        it('should check if object has right properties', function(){
             expect(elem1).to.have.ownProperty('number', 5);
             expect(elem1).to.have.ownProperty('square', 25);
             expect(elem1).to.have.ownProperty('ping');
@@ -39,15 +37,15 @@ describe('Lodash training Object', function ()
         it('should check if obj function (pong) return right value', function(){
             expect(elem1.pong()).to.eql('Number: 25');
         });
-        it('should check if Cube have right properties', function(){
+        it('should check if obj2 have right properties', function(){
             expect(elem2).to.have.ownProperty('number', 6);
             expect(elem2).to.have.ownProperty('string','default');
         });
-        it('should check if Cube have right prototype properties', function(){
+        it('should check if obj2 have right prototype properties', function(){
             expect(elem2).to.have.property('square', 36);
             expect(elem2).not.to.have.ownProperty('square', 36);
         });
-        it('should return new object with properties both objects', function(){
+        it('should return new object with properties from both objects', function(){
             var assigmentResults = _.assign.apply(_, params);
             expect(assigmentResults).to.have.ownProperty('number', 6);
             expect(assigmentResults).to.have.ownProperty('square', 25);
@@ -61,7 +59,7 @@ describe('Lodash training Object', function ()
         var params,
             elem1,
             elem2;
-        beforeEach(function(){
+        before(function(){
             params = datasets.assignIn();
             elem1 = params[0];
             elem2 = params[1];
@@ -70,36 +68,36 @@ describe('Lodash training Object', function ()
             expect(typeof elem1).to.eql('object');
             expect(elem2 instanceof Object).to.eql(true);
         });
-        it('should check properties obj1', function(){
+        it('should first object have proper properties', function(){
             expect(elem1).to.have.ownProperty('number', 5);
             expect(elem1).to.have.ownProperty('square');
-            expect(elem1.square()).to.eql('Square: ' + Math.pow(Math, this.number));
+            expect(elem1.square()).to.eql('Square: ' + Math.pow(this.number, 2));
         });
         it('should check properties obj2', function(){
             expect(elem2).to.have.ownProperty('number', 4);
             expect(elem2).to.have.ownProperty('cube', 64);
             expect(elem2).to.have.property('square');
             expect(elem2).not.to.have.ownProperty('square');
-            expect(elem2.square()).to.eql('Square: ' + Math.pow(Math, this.number));
+            expect(elem2.square()).to.eql('Square: ' + Math.pow(this.number, 2));
         });
-        it('should check if obj2 have prototype properties', function(){
+        it('should check if obj2 have fourthPower as prototype property', function(){
             expect(elem2).not.to.have.ownProperty('fourthPower', 256);
             expect(elem2).to.have.property('fourthPower', 256);
         });
-        it('should return new object with properties with both objects', function(){
+        it('should return new object with properties from both objects', function(){
             var assigmentResults = _.assignIn.apply(_, params);
             expect(assigmentResults).to.have.ownProperty('number', 4);
             expect(assigmentResults).to.have.ownProperty('cube', 64);
             expect(assigmentResults).to.have.ownProperty('fourthPower', 256);
-            expect((assigmentResults).square()).to.eql('Square: ' + Math.pow(Math, this.number));
+            expect((assigmentResults).square()).to.eql('Square: ' + Math.pow(this.number, 2));
         });
     });
 
     describe('at', function () {
         describe('at1', function () {
             var params;
-            beforeEach(function(){
-                params = datasets.at1()
+            before(function(){
+                params = datasets.at1();
             });
             it('should check types', function(){
                 var elem2 = params[1];
@@ -114,7 +112,7 @@ describe('Lodash training Object', function ()
                 };
 
                 var randCover = function(){
-                    //function _.random Returns the random number between 1 and 100
+                    //function _.random Returns the random number between 1 and 50
                     return _.random(1, 50);
                 };
 
@@ -128,7 +126,7 @@ describe('Lodash training Object', function ()
             var params,
                 elem1,
                 elem2;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.at2();
                 elem1 = params[0];
                 elem2 = params[1];
@@ -156,7 +154,7 @@ describe('Lodash training Object', function ()
             elem1,
             elem2,
             elem3;
-        beforeEach(function(){
+        before(function(){
             params = datasets.defaults();
             elem1 = params[0];
             elem2 = params[1];
@@ -192,7 +190,7 @@ describe('Lodash training Object', function ()
         var params,
             elem1,
             elem2;
-        beforeEach(function(){
+        before(function(){
             params = datasets.defaultsDeep();
             elem1 = params[0];
             elem2 = params[1];
@@ -226,7 +224,7 @@ describe('Lodash training Object', function ()
     describe('findKey', function () {
         describe('findKey1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findKey1();
             });
             it('should check types', function(){
@@ -242,7 +240,7 @@ describe('Lodash training Object', function ()
                     //function _.random Returns the random number between 0 and 20
                     obj1['key' + index] = {number: _.random(20)};
                 });
-                //function _.random Returns the random number between 0 and 100
+                //function _.random Returns the random number between 0 and 99
                 var expectedKey = _.keys(obj1)[_.random(99)];
 
                 //function _.random Returns the random number between 0 and 10
@@ -254,14 +252,14 @@ describe('Lodash training Object', function ()
 
         describe('findKey2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findKey2();
             });
             it('should check types', function(){
                 var elem2 = params[1];
                 expect(typeof elem2).to.eql('object');
             });
-            it('should return random value', function(){
+            it('should return keys with value { number: 15 }', function(){
                 var obj1 = {};
 
                 //function _.times Returns the array. In this case 100 results.
@@ -279,13 +277,14 @@ describe('Lodash training Object', function ()
 
                 var newObject = obj1;
                 var expected = _.findKey(newObject, params[1]);
+                console.log(expected);
                 expect(_.findKey.apply(_, datasets.findKey2(obj1))).to.eql(expected);
             });
         });
 
         describe('findKey3', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findKey3();
             });
             it('should check types', function(){
@@ -296,7 +295,8 @@ describe('Lodash training Object', function ()
                 var obj1 = {};
 
                 var randomBool = function(){
-                    //function _.random Returns random true or false
+                    //function _.random will return 0 or 1 but result of comparision
+                    // will be true or false
                     return _.random() < 0.5;
                 };
 
@@ -320,7 +320,7 @@ describe('Lodash training Object', function ()
 
         describe('findKey4', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findKey4();
             });
             it('should check types', function(){
@@ -330,7 +330,7 @@ describe('Lodash training Object', function ()
             it('should return key of matched element', function(){
                 var obj1 = {},
                 //function _.random Returns the random number between 0 and 20
-                    random = _.random((20));
+                    random = _.random(20);
 
                 var randomBool = function(){
                     //function _.random Returns random true or false
@@ -352,14 +352,14 @@ describe('Lodash training Object', function ()
     describe('findLastKey', function () {
         describe('findLastKey1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findLastKey1();
             });
             it('should check types', function(){
                 var element2 = params[1];
                 expect(element2 instanceof Function).to.eql(true);
             });
-            it('should create object with random values of orders', function(){
+            it('should return key of last element matching given criteria', function(){
                 var randomBool = function(){
                     //function _.random Returns random true or false
                     return _.random() < 0.5;
@@ -378,7 +378,7 @@ describe('Lodash training Object', function ()
 
         describe('findLastKey2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findLastKey2();
             });
             it('should check types', function(){
@@ -404,7 +404,7 @@ describe('Lodash training Object', function ()
 
         describe('findLastKey3', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findLastKey3();
             });
             it('should check types', function(){
@@ -432,7 +432,7 @@ describe('Lodash training Object', function ()
 
         describe('findLastKey4', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.findLastKey4();
             });
             it('should check types', function(){
@@ -465,7 +465,7 @@ describe('Lodash training Object', function ()
             elem2,
             spy,
             test;
-        beforeEach(function(){
+        before(function(){
             params = datasets.forIn();
             spy = sinon.spy(params[1]);
             elem1 = params[0];
@@ -489,7 +489,8 @@ describe('Lodash training Object', function ()
             var obj = {
                 'a': 2,
                 'b': 4
-            }
+            };
+
             test(obj.a, Object.keys(obj)[0], obj);
             expect(spy).to.have.been.callCount(1);
             expect(spy).to.have.been.returned(4);
@@ -511,7 +512,7 @@ describe('Lodash training Object', function ()
             elem2,
             spy,
             test;
-        beforeEach(function(){
+        before(function(){
             params = datasets.forInRight();
             spy = sinon.spy(params[1]);
             elem1 = params[0];
@@ -524,8 +525,8 @@ describe('Lodash training Object', function ()
             expect(elem2 instanceof Function).to.eql(true);
         });
         it('should check own properties obj', function(){
-            expect(elem1).to.have.ownProperty('arms', 2);
-            expect(elem1).to.have.ownProperty('legs', 2);
+            expect(elem1).to.have.ownProperty('arms');
+            expect(elem1).to.have.ownProperty('legs');
         });
         it('should check prototype properties obj', function(){
             expect(elem1).to.have.property('head', 1);
@@ -555,7 +556,7 @@ describe('Lodash training Object', function ()
         var params,
             elem1,
             elem2;
-        beforeEach(function(){
+        before(function(){
             params = datasets.forOwn();
             elem1 = params[0];
             elem2 = params[1];
@@ -582,7 +583,7 @@ describe('Lodash training Object', function ()
         var params,
             elem1,
             elem2;
-        beforeEach(function(){
+        before(function(){
             params = datasets.forOwnRight();
             elem1 = params[0];
             elem2 = params[1];
@@ -606,51 +607,59 @@ describe('Lodash training Object', function ()
     });
     
     describe('get', function () {
+            var month,
+                day,
+                randNameMonth,
+                randNameDay,
+                randDay,
+                obj;
+            beforeEach(function(){
+                month = ['January', 'February', 'March', 'Aprlil', 'May'];
+                day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
+
+                randNameMonth = function(){
+                    //function _.random Returns the random number between 0 and 4
+                    return month[_.random(0, 4)];
+                };
+
+                randNameDay = function(){
+                    //function _.random Returns the random number between 0 and 6
+                    return day[_.random(0, 6)];
+                };
+
+                randDay = function(){
+                    //function _.random Returns the random number between 1 and 31
+                    return _.random(1,31);
+                };
+
+                obj = {
+                    month: randNameMonth(),
+                    nameDay: randNameDay(),
+                    day: randDay(),
+                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
+                };
+        });
         describe('get1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.get1();
             });
             it('should check types', function(){
-                var elem = params[1];
                 expect(params).to.have.length(2);
+                var elem = params[1];
                 expect(typeof elem).to.eql('string');
             });
             it('should check filter value', function(){
                 expect(params[1]).to.have.length(28);
             });
             it('should return the resolved value from second argument', function(){
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.get.apply(_, datasets.get1(obj))).to.eql('be cool');
             });
         });
 
         describe('get2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.get2();
             });
             it('should check types', function(){
@@ -660,37 +669,13 @@ describe('Lodash training Object', function ()
                 expect(elem).to.have.length(4);
             });
             it('should return the resolved value from object', function(){
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.get.apply(_, datasets.get2(obj))).to.eql('be cool');
             });
         });
 
         describe('get3', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.get3();
             });
             it('should check types', function(){
@@ -701,30 +686,6 @@ describe('Lodash training Object', function ()
                 expect(typeof elem3).to.eql('string');
             });
             it('should return the resolved value from object', function(){
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.get.apply(_, datasets.get3(obj))).to.eql('default value');
             });
         });
@@ -735,7 +696,7 @@ describe('Lodash training Object', function ()
             var params,
                 elem1,
                 elem2;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.has1();
             });
             it('should check types', function(){
@@ -762,7 +723,7 @@ describe('Lodash training Object', function ()
             var params,
                 elem1,
                 elem2;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.has2();
                 elem1 = params[0];
                 elem2 = params[1];
@@ -790,7 +751,7 @@ describe('Lodash training Object', function ()
             var params,
                 elem1,
                 elem2;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.hasIn1();
                 elem1 = params[0];
                 elem2 = params[1];
@@ -816,7 +777,7 @@ describe('Lodash training Object', function ()
             var params,
                 elem1,
                 elem2;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.hasIn2();
                 elem1 = params[0];
                 elem2 = params[1];
@@ -842,7 +803,7 @@ describe('Lodash training Object', function ()
     describe('invert', function () {
 
         var params;
-        beforeEach(function(){
+        before(function(){
             params = datasets.invert();
         });
         it('should returns inverted object', function(){
@@ -856,8 +817,7 @@ describe('Lodash training Object', function ()
 
             });
 
-            var newObject = obj1;
-            var expected = _.invert(newObject);
+            var expected = _.invert(obj1);
             expect(_.invert.apply(_, datasets.invert(obj1))).to.eql(expected);
         });
     });
@@ -865,7 +825,7 @@ describe('Lodash training Object', function ()
     describe('invertBy', function () {
         describe('invertBy1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.invertBy1();
             });
             it('should return inverted object', function(){
@@ -884,15 +844,15 @@ describe('Lodash training Object', function ()
                     }
                     counter++;
                 });
-                var newObject = obj1;
-                var expected = _.invertBy(newObject);
+
+                var expected = _.invertBy(obj1);
                 expect(_.invertBy.apply(_, datasets.invertBy1(obj1))).to.eql(expected);
 
             });
         });
         describe('invertBy2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.invertBy2();
             });
             it('should return inverted object', function(){
@@ -906,14 +866,13 @@ describe('Lodash training Object', function ()
                     //function _.random Returns the random number between 0 and 20
                     obj1['key' + indexInside] = _.random(20);
 
-                    if(counter === 10 || counter === 20 || counter === 30 || counter === 40 ||
-                        counter === 50 || counter === 60 || counter === 70 || counter === 80 || counter === 90){
+                    if(counter%10 === 0){
                         indexInside++;
                     }
                     counter++;
                 });
-                var newObject = obj1;
-                var expected = _.invertBy(newObject, params[1]);
+
+                var expected = _.invertBy(obj1, params[1]);
                 expect(_.invertBy.apply(_, datasets.invertBy2(obj1))).to.eql(expected);
 
             });
@@ -921,6 +880,11 @@ describe('Lodash training Object', function ()
     });
 
     describe('invoke', function () {
+        var obj;
+        before(function(){
+            //function _.range makes array from 1 to 50 with step equal -3
+            obj = {key: [{number: {random: _.range(50, 1, -3)}} ]};
+        });
         describe('invoke1', function () {
             var params,
                 elem2,
@@ -945,11 +909,6 @@ describe('Lodash training Object', function ()
                 expect(searchFun).to.eql('unshift');
             });
             it('should return invoked object', function(){
-                var obj = {};
-
-                //function _.ramge makes array from 1 to 50 with step equals 3
-                obj = {key: [{number: {random: _.range(50, 1, -3)}} ]};
-
                 expect(_.invoke.apply(_, datasets.invoke1(obj))).to.eql(18);
                 expect(obj.key[0].number.random[0]).to.equal(99);
             });
@@ -958,7 +917,7 @@ describe('Lodash training Object', function ()
         describe('invoke2', function () {
             var params,
                 elem2;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.invoke2();
             });
             it('should check types', function(){
@@ -973,11 +932,6 @@ describe('Lodash training Object', function ()
                 expect(searchFun).to.eql('pop');
             });
             it('should return invoked object', function(){
-                var obj = {};
-
-                //function _.ramge makes array from 1 to 50 with step equals 3
-                obj = {key: [{number: {random: _.range(50, 1, -3)}} ]};
-
                 expect(_.invoke.apply(_, datasets.invoke2(obj))).to.eql(2);
                 expect(obj.key[0].number.random[(obj.key[0].number.random.length) - 1]).to.equal(5);
             });
@@ -987,11 +941,11 @@ describe('Lodash training Object', function ()
     describe('keys', function () {
         var params,
             elem1;
-        beforeEach(function(){
+        before(function(){
             params = datasets.keys();
             elem1 = params[0];
         });
-        it('should ckech type', function(){
+        it('should check type', function(){
             expect(elem1 instanceof Object).to.eql(true);
         });
         it('should object have own properties', function(){
@@ -1017,7 +971,7 @@ describe('Lodash training Object', function ()
     describe('keysIn', function () {
         var params,
             elem1;
-        beforeEach(function(){
+        before(function(){
             params = datasets.keysIn();
             elem1 = params[0];
         });
@@ -1044,13 +998,10 @@ describe('Lodash training Object', function ()
     });
 
     describe('mapKeys', function () {
-        describe('mapKeys1', function () {
-            
-        });
 
         describe('mapKeys2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.mapKeys2();
             });
             it('should check types', function(){
@@ -1076,9 +1027,17 @@ describe('Lodash training Object', function ()
     });
 
     describe('mapValues', function () {
-        describe('mapValues2', function () {
+        var obj;
+        beforeEach(function(){
+            obj = {
+                'car1': { 'name': 'Ferrari', 'vmax': '250 km/h'},
+                'car2': { 'name': 'Lamborghini', 'vmax': '350 km/h'},
+                'car3': { 'name': 'Bugatti', 'vmax': '420 km/h'}
+            };
+        });
+        describe('mapValues1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.mapValues1();
             });
             it('should check types', function(){
@@ -1087,20 +1046,16 @@ describe('Lodash training Object', function ()
                 expect(params).to.have.length(2);
             });
             it('should check returned obj', function(){
-                var obj = {
-                    'car1': { 'name': 'Ferrari', 'vmax': '250 km/h'},
-                    'car2': { 'name': 'Lamborghini', 'vmax': '350 km/h'},
-                    'car3': { 'name': 'Bugatti', 'vmax': '420 km/h'}
-                };
-                expect(_.mapValues.apply(_, datasets.mapValues1(obj))).to.have.property('car1', '250 km/h');
-                expect(_.mapValues.apply(_, datasets.mapValues1(obj))).to.have.property('car2', '350 km/h');
-                expect(_.mapValues.apply(_, datasets.mapValues1(obj))).to.have.property('car3', '420 km/h');
+                var mappedValue = _.mapValues.apply(_, datasets.mapValues1(obj));
+                expect(mappedValue).to.have.property('car1', '250 km/h');
+                expect(mappedValue).to.have.property('car2', '350 km/h');
+                expect(mappedValue).to.have.property('car3', '420 km/h');
             });
         });
 
         describe('mapValues2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.mapValues2();
             });
             it('should check types', function(){
@@ -1112,11 +1067,6 @@ describe('Lodash training Object', function ()
                 expect(params[1]).to.have.length(4);
             });
             it('should check returned obj', function(){
-                var obj = {
-                    'car1': { 'name': 'Ferrari', 'vmax': '250 km/h'},
-                    'car2': { 'name': 'Lamborghini', 'vmax': '350 km/h'},
-                    'car3': { 'name': 'Bugatti', 'vmax': '420 km/h'}
-                };
                 expect(_.mapValues.apply(_, datasets.mapValues2(obj))).to.have.property('car1', 'Ferrari');
                 expect(_.mapValues.apply(_, datasets.mapValues2(obj))).to.have.property('car2', 'Lamborghini');
                 expect(_.mapValues.apply(_, datasets.mapValues2(obj))).to.have.property('car3', 'Bugatti');
@@ -1128,7 +1078,7 @@ describe('Lodash training Object', function ()
         var params,
             elem1,
             elem2;
-        beforeEach(function(){
+        before(function(){
             params = datasets.merge();
             elem1 = params[0];
             elem2 = params[1];
@@ -1167,7 +1117,7 @@ describe('Lodash training Object', function ()
             elem1,
             elem2,
             elem3;
-        beforeEach(function(){
+        before(function(){
             params = datasets.mergeWith();
             elem1 = params[0];
             elem2 = params[1];
@@ -1204,7 +1154,7 @@ describe('Lodash training Object', function ()
     describe('omit', function () {
         describe('omit1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.omit1();
             });
             it('should check types', function(){
@@ -1228,7 +1178,7 @@ describe('Lodash training Object', function ()
 
         describe('omit2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.omit2();
             });
             it('should check types', function(){
@@ -1251,31 +1201,62 @@ describe('Lodash training Object', function ()
             });
         });
     });
-        
+
     describe('omitBy', function () {
-        describe('omitBy1', function () {
-            var params;
-            beforeEach(function(){
-                params = datasets.omitBy1();
-            });
-            it('should check types', function(){
-                expect(params).to.have.length(2);
-            });
-            //it('should return object with element where ', function(){
-            //    var tallestBuildings = {'Burj Khalifa': 829, 'Tokyo Skytree': 634, 'Abraj Al Bait Towers': 601};
-            //
-            //    var maxValue =
-            //        Object.keys(tallestBuildings).reduce(function(a, b){
-            //            return tallestBuildings[a] > tallestBuildings[b] ? a : b; });
-            //
-            //    expect(_.omitBy.apply(_, datasets.omitBy1(tallestBuildings, maxValue))).to.eql({'Tokyo Skytree': 634, 'Abraj Al Bait Towers': 601});
-            //});
+        var params;
+        before(function(){
+            params = datasets.omitBy();
+        });
+        it('should check types', function(){
+            expect(params).to.have.length(2);
+        });
+        it('should return object with element where ', function(){
+            var tallestBuildings = {'Burj Khalifa': '829', 'Tokyo Skytree': 634, 'Abraj Al Bait Towers': 601};
+            var filter = _.isNumber;
+
+            expect(_.omitBy.apply(_, datasets.omitBy(tallestBuildings, filter))).to.eql({'Burj Khalifa': '829'});
         });
     });
+
     describe('result', function () {
+        var month,
+                day,
+                randNameMonth,
+                randNameDay,
+                randDay,
+                obj;
+        beforeEach(function()
+        {
+            month = ['January', 'February', 'March', 'Aprlil', 'May'];
+            day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
+
+            randNameMonth = function ()
+            {
+                //function _.random Returns the random number between 0 and 4
+                return month[_.random(0, 4)];
+            };
+
+            randNameDay = function ()
+            {
+                //function _.random Returns the random number between 0 and 6
+                return day[_.random(0, 6)];
+            };
+
+            randDay = function ()
+            {
+                //function _.random Returns the random number between 1 and 31
+                return _.random(1, 31);
+            };
+            obj = {
+                month: randNameMonth(),
+                nameDay: randNameDay(),
+                day: randDay(),
+                exercises: {tasks: [{firstTask: 'write a code'}, {secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
+            };
+        });
         describe('result1', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.result1();
             });
             it('should check types', function(){
@@ -1288,40 +1269,15 @@ describe('Lodash training Object', function ()
                 expect(params[1]).to.have.length(28);
             });
             it('should return the resolved value from second argument', function(){
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.result.apply(_, datasets.result1(obj))).to.eql('be cool');
             });
         });
 
         describe('result2', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.result2();
             });
-
             it('should check types', function(){
                 var elem = params[1];
 
@@ -1329,38 +1285,13 @@ describe('Lodash training Object', function ()
                 expect(elem).to.have.length(4);
             });
             it('should return the resolved value from object', function(){
-
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.result.apply(_, datasets.result2(obj))).to.eql('be cool');
             });
         });
 
         describe('result3', function () {
             var params;
-            beforeEach(function(){
+            before(function(){
                 params = datasets.result3();
             });
 
@@ -1372,31 +1303,6 @@ describe('Lodash training Object', function ()
                 expect(typeof elem3).to.eql('string');
             });
             it('should return the resolved value from object', function(){
-
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.result.apply(_, datasets.result3(obj))).to.eql('default value');
             });
         });
@@ -1413,31 +1319,6 @@ describe('Lodash training Object', function ()
                 expect(elem3 instanceof Function).to.eql(true);
             });
             it('should return the resolved value from object', function(){
-
-                var month = ['January', 'February', 'March', 'Aprlil', 'May'],
-                    day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Friday'];
-
-                var randMonth = function(){
-                    //function _.random Returns the random number between 0 and 4
-                    return _.random(0, 4);
-                };
-
-                var randNameDay = function(){
-                    //function _.random Returns the random number between 0 and 6
-                    return _.random(0, 6);
-                };
-
-                var randDay = function(){
-                    //function _.random Returns the random number between 1 and 31
-                    return _.random(1,31);
-                };
-
-                var obj = {
-                    month: month[randMonth()],
-                    nameDay: day[randNameDay()],
-                    day: randDay(),
-                    exercises: {tasks: [{firstTask: 'write a code'},{secondTask: 'learn lodash'}, {thirdTask: 'be cool'}]}
-                };
                 expect(_.result.apply(_, datasets.result4(obj))).to.eql('default value');
             });
         });

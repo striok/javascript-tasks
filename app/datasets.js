@@ -411,7 +411,6 @@ module.exports = {
         return [obj, filter];
     },
 
-
     mapValues2: function(obj){
 
         var filterStr = 'name';
@@ -464,7 +463,7 @@ module.exports = {
         return [obj, arr];
     },
 
-    omitBy1: function(obj, filter){
+    omitBy: function(obj, filter){
 
         return [obj, filter];
     },
